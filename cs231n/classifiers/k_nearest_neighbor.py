@@ -163,10 +163,9 @@ class KNearestNeighbor(object):
             # neighbors. Store these labels in closest_y.                           #
             # Hint: Look up the function numpy.argsort.                             #
             #########################################################################
+            result = np.array(np.argsort(dists[i, :])).flatten()
             # labels = self.y_train[np.argsort(dists[i, :])].flatten()
-            # print labels.shape
             # closest_y = labels[0:k]
-            result = np.argsort(dists[i])
             closest_y = [self.y_train[value] for index, value in enumerate(result) if index < k]
             ########################################################################
             # TODO:                                                                 #
@@ -176,7 +175,7 @@ class KNearestNeighbor(object):
             # label.                                                                #
             #########################################################################
             import collections
-            r = collections.Counter(closest_y).most_common()[0][0]
+            r = collections.Counter(closest_y).most_common(1)[0][0]
             y_pred[i] = r
             #########################################################################
             #                           END OF YOUR CODE                            #
