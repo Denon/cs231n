@@ -1,0 +1,12 @@
+*.swp
+*.pyc
+.env/*
+.ropeproject
+.DS_store
+.idea
+
+# ipython
+.ipynb_checkpoints
+
+# dataset folder
+datasets
