@@ -30,11 +30,11 @@ X_dev -= mean_image
 X_train = np.hstack([X_train, np.ones((X_train.shape[0], 1))])
 X_dev = np.hstack([X_dev, np.ones((X_dev.shape[0], 1))])
 
-from cs231n.classifiers.linear_svm import svm_loss_naive
+from cs231n.classifiers.linear_svm import svm_loss_vectorized
 import time
 
 # generate a random SVM weight matrix of small numbers
 W = np.random.randn(3073, 10) * 0.0001
 
-loss, grad = svm_loss_naive(W, X_dev, y_dev, 0.00001)
+loss, grad = svm_loss_vectorized(W, X_dev, y_dev, 0.00001)
 print 'loss: %f' % (loss, )
