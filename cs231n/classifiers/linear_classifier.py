@@ -39,7 +39,6 @@ class LinearClassifier(object):
             y_batch = None
 
             #########################################################################
-            # TODO:                                                                 #
             # Sample batch_size elements from the training data and their           #
             # corresponding labels to use in this round of gradient descent.        #
             # Store the data in X_batch and their corresponding labels in           #
@@ -62,7 +61,6 @@ class LinearClassifier(object):
 
             # perform parameter update
             #########################################################################
-            # TODO:                                                                 #
             # Update the weights using the gradient and the learning rate.          #
             #########################################################################
             self.W -= learning_rate * grad
@@ -88,12 +86,13 @@ class LinearClassifier(object):
           array of length N, and each element is an integer giving the predicted
           class.
         """
-        y_pred = np.zeros(X.shape[1])
+
+        y_pred = np.zeros(X.shape[0])
         ###########################################################################
-        # TODO:                                                                   #
         # Implement this method. Store the predicted labels in y_pred.            #
         ###########################################################################
-        pass
+        pred_matrix = X.dot(self.W)
+        y_pred = np.argmax(pred_matrix, axis=1)
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
