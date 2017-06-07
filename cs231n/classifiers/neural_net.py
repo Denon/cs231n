@@ -70,11 +70,11 @@ class TwoLayerNet(object):
     # Compute the forward pass
     scores = None
     #############################################################################
-    # TODO: Perform the forward pass, computing the class scores for the input. #
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    pass
+    output = np.maximum(0, X.dot(W1) + b1)
+    scores = output.dot(W2) + b2
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -86,13 +86,19 @@ class TwoLayerNet(object):
     # Compute the loss
     loss = None
     #############################################################################
-    # TODO: Finish the forward pass, and compute the loss. This should include  #
+    # Finish the forward pass, and compute the loss. This should include  #
     # both the data loss and L2 regularization for W1 and W2. Store the result  #
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss. So that your results match ours, multiply the            #
     # regularization loss by 0.5                                                #
     #############################################################################
-    pass
+    max_f_i = np.max(scores, axis=1)
+    f_i = (scores.T - max_f_i.T).T
+    sum_f_i = np.sum(np.exp(f_i), axis=1)
+    l_i = -f_i[np.arange(N), y] + np.log(sum_f_i)
+    loss = np.sum(l_i)
+    loss /= N
+    loss += 0.5 * reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -100,11 +106,19 @@ class TwoLayerNet(object):
     # Backward pass: compute gradients
     grads = {}
     #############################################################################
-    # TODO: Compute the backward pass, computing the derivatives of the weights #
+    # Compute the backward pass, computing the derivatives of the weights #
     # and biases. Store the results in the grads dictionary. For example,       #
     # grads['W1'] should store the gradient on W1, and be a matrix of same size #
     #############################################################################
-    pass
+    p = ((np.exp(f_i)).T / sum_f_i).T
+    p[np.arange(N), y] -= 1
+    dW = p / N
+    grads['W2'] = output.T.dot(dW) + reg * W2
+    grads['b2'] = np.sum(dW, axis=0)
+    dh = dW.dot(W2.T)
+    dh_Relu = (output > 0) * dh
+    grads['W1'] = X.T.dot(dh_Relu) + reg * W1
+    grads['b1'] = np.sum(dh_Relu, axis=0)
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
